@@ -3,11 +3,12 @@ from sevdeskapi.utils.converter import Convert
 
 class SevDeskTranslate:
 
-    def __init__(self, name, apiname, aliases=[], converter=Convert.to_string):
+    def __init__(self, name, apiname, aliases=[], converter=Convert.to_string, required=False):
         self._name = name # Name who set as Attribute at object
         self._apiname = apiname # NAme who used for communication with SevDesk
         self._aliases = aliases # other names that may come up
         self._converter = converter # Method who manage the datatype of field. Can be also a other Model
+        self._required = required # specifies whether the parameter is required for requets
 
     def name(self):
         return self._name

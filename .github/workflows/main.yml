@@ -14,9 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Set up Python 3.8.2
-        uses: actions/setup-python@3.8.2-20200609.8
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.8.2
+          python-version: 3.8
       - name: Install & Upgrade
         run: |
           pip3 install -r requirements.txt; pip3 install -r requirements_dev.txt

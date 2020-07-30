@@ -1,0 +1,24 @@
+name: Prepare Sevdesk
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@main
+      - name: Set up Python 3.8.2
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.8.2
+      - name: Install & Upgrade
+        run: |
+          pip3 install -r requirements.txt; pip3 install -r requirements_dev.txt
+      - name: Build Sphinx
+        run: |
+          cd docs; make build
+      - name: Upload documentation
+        run: |
+          wget https://raw.githubusercontent.com/docarea/cli/master/demo.bash
+          chmod a+x demo.bash
+          ./demo.bash docs/build/
+      - name: Notify Slack
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":"Image Build Done!"}' https://hooks.slack.com/services/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

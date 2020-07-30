@@ -10,6 +10,7 @@ Welcome to SevDesk-API's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   code/code
 
 
 Indices and tables

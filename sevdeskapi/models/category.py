@@ -3,10 +3,8 @@ import sevdeskapi.models.base as basemodel
 from sevdeskapi.utils.sevdesktranslate import SevDeskTranslate
 
 
-class Contact(basemodel.BaseModel):
-
-    CONTROLLER_CLASS = contactcontroller.ContactController
-
+class Category(basemodel.BaseModel):
+    CONTROLLER_CLASS = contactcontroller.CategoryController
     STRUCTURE = {
         "familyname": SevDeskTranslate("familyName", "familyname"),
         "surename": SevDeskTranslate("sureName", "surename", ["name2"]),

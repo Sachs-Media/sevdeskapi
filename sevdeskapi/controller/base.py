@@ -20,6 +20,11 @@ class BaseController:
             :type model: BaseModel
         """
         self._model = model
+        if hasattr(self, "Factory"):
+            self._factory = self.__class__.Factory(self)
+
+    def factory(self):
+        return self._factory
 
     def sevdesk_client(self) -> "SevDeskClient":
         """
@@ -50,3 +55,15 @@ class BaseController:
 
     def create(self, *args, **kwargs):
         raise NotImplemented("This model doesnt have implement a create method")
+
+
+class BaseFactory:
+
+    def __init__(self, controller):
+        self._controller = controller
+
+    def sevdesk_client(self):
+        return self.controller().sevdesk_client()
+
+    def controller(self):
+        return self._controller

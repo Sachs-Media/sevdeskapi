@@ -35,6 +35,9 @@ class SevDeskClient:
 
         assert model is not None
 
+        if type(model) in [list, tuple]:
+            model = "/".join(model)
+
         query = "?"
         for key, value in kwargs.items():
             query += "{}={}&".format(key, value)
@@ -49,5 +52,11 @@ class SevDeskClient:
         response = requests.post(url, data=data, headers={
             "Authorization": self._api_token
         })
-        print(response.text)
-        #requests.post(url, data)
+        return response.json()
+
+    def get(self, url):
+
+        response = requests.get(url, headers={
+            "Authorization": self._api_token
+        })
+        return response.json()

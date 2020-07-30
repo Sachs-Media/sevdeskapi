@@ -41,8 +41,6 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
 
         self.mapattributes(kwargs)
 
-
-
     def controller(self):
         return self._controller
 
@@ -51,12 +49,6 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
             raise exception.NotConnectedToClient("Please link this to SevDeskClient object. Using client.send(<thisobject>) ")
         return self._sevdesk_client
 
-    def mapattributes(self, data):
-
-        for key, item in data.items():
-            field = self._find_structure_field(key)
-            setattr(self, field.name(), field.converter(item, key, data))
-
     def use_sevclient(self, sevclient):
 
         if self._sevdesk_client is None:
@@ -64,6 +56,11 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
         else:
             raise exception.AlreadyConnected("Another SevDeskClient is linked to this Model")
 
+    def mapattributes(self, data):
+
+        for key, item in data.items():
+            field = self._find_structure_field(key)
+            setattr(self, field.name(), field.converter(item, key, data))
 
     def convert(self):
         """
@@ -71,7 +68,6 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
         :return:
         """
         raise NotImplemented("This method is currently not implemented")
-
 
     def get_options(self):
         return {}

@@ -13,7 +13,7 @@ jobs:
           pip3 install -r requirements.txt; pip3 install -r requirements_dev.txt
       - name: Build Sphinx
         run: |
-          cd docs; make build
+          cd docs; make html
       - name: Upload documentation
         run: |
           wget https://raw.githubusercontent.com/docarea/cli/master/demo.bash

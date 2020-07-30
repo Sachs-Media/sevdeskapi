@@ -1,4 +1,13 @@
 name: Prepare Sevdesk
+
+
+on:
+  push:
+    branches:
+      - development
+      - release
+
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

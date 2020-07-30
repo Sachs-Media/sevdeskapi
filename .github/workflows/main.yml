@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Set up Python 3.8.2
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@3.8.2-20200609.8
         with:
           python-version: 3.8.2
       - name: Install & Upgrade

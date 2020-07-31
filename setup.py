@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.0.1",
     author="Stefan Eiermann, Sachs Media",
     author_email="support@sachs-media.com",
-    description="A small example package",
+    description="Provides a Python (object-based) API for SevDesk",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/Sachs-Media/sevdeskapi",
@@ -17,6 +17,9 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Topic :: Office/Business",
+        "Topic :: Utilities",
+        "Topic :: Software Development :: Libraries"        
     ],
     python_requires='>=3.6',
 )

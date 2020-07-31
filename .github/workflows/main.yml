@@ -31,4 +31,5 @@ jobs:
       - name: Upload documentation
         run: |
           ls -lah;
+          chmod +x upload.bash;
           ./upload.bash docs/build/

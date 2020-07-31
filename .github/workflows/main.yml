@@ -30,5 +30,4 @@ jobs:
           args: https://raw.githubusercontent.com/docarea/cli/master/demo.bash --output upload.bash
       - name: Upload documentation
         run: |
-          chmod a+x upload.bash;
           ./upload.bash docs/build/

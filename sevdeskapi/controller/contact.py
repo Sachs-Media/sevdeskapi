@@ -9,20 +9,20 @@ class ContactController(basecontroller.BaseController):
 
         customer_number = self.factory().getNextCustomerNumber()
 
-        self.model().customerNumber = customer_number
-        self.model().objectName = "Contact"
-        self.model().categoryId = 43
-        self.model().categoryObjectName = "Category"
+        self.model.customerNumber = customer_number
+        self.model.objectName = "Contact"
+        self.model.categoryId = 43
+        self.model.categoryObjectName = "Category"
 
-        request_url = self.sevdesk_client().build_url(model=self.apimodel())
-        data = self.model().get_dict()
-        response = self.sevdesk_client().post(request_url, data)
+        request_url = self.get_sevdesk_client().build_url(model=self.get_apimodel_name())
+        data = self.model.get_dict()
+        response = self.get_sevdesk_client().post(request_url, data)
         print(response)
 
 
     class Factory(basecontroller.BaseFactory):
 
         def getNextCustomerNumber(self):
-            request_url = self.sevdesk_client().build_url(model=(self.controller().apimodel(), "Factory", "getNextCustomerNumber"))
-            response = self.sevdesk_client().get(request_url)
+            request_url = self.get_sevdesk_client().build_url(model=(self.controller.get_apimodel_name(), "Factory", "getNextCustomerNumber"))
+            response = self.get_sevdesk_client().get(request_url)
             return response["objects"]

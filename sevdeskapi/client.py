@@ -1,5 +1,5 @@
 import requests
-
+import sevdeskapi.models
 
 class SevDeskClient:
     """
@@ -16,7 +16,7 @@ class SevDeskClient:
     def create(self, *model_list):
         for model in model_list:
             model.use_sevclient(self)
-            model.controller().create()
+            model.controller.create()
 
     def build_url(self, base_url=None, version=None, model=None, **kwargs):
         """
@@ -60,3 +60,12 @@ class SevDeskClient:
             "Authorization": self._api_token
         })
         return response.json()
+
+    def controller(self):
+        return SevDeskClient.Controller(self)
+
+    class Controller:
+
+        def __init__(self, client):
+            self.category = sevdeskapi.models.Category(options={"sevdesk_client": client}).controller
+            self.contact = sevdeskapi.models.Contact(options={"sevdesk_client": client}).controller

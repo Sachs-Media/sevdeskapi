@@ -19,33 +19,23 @@ class BaseController:
             :param model: The model who use this controller
             :type model: BaseModel
         """
-        self._model = model
+        self.model = model
+
         if hasattr(self, "Factory"):
-            self._factory = self.__class__.Factory(self)
+            self.factory = self.__class__.Factory(self)
 
-    def factory(self):
-        return self._factory
-
-    def sevdesk_client(self) -> "SevDeskClient":
+    def get_sevdesk_client(self) -> "SevDeskClient":
         """
             Getter for deliver the SevDeskClient object
 
             :return SevDeskClient:
         """
 
-        if not self.model().sevdesk_client():
+        if not self.model.get_sevdesk_client():
             raise exception.NotConnectedToClient("Please link this to SevDeskClient object. Using client.send(<thisobject>) ")
-        return self.model().sevdesk_client()
+        return self.model.get_sevdesk_client()
 
-    def model(self) -> "BaseModel":
-        """
-            Getter for Model who used this Controller
-
-            :return BaseModel: Model who use this Controller inherith from BaseModel
-        """
-        return self._model
-
-    def apimodel(self) -> str:
+    def get_apimodel_name(self) -> str:
         """
             Returns the name of API Endpoint (model) BaseURL + Controller + Version + Model: https://my.sevdesk.de/api/v1/Contact/
 
@@ -54,16 +44,41 @@ class BaseController:
         return self.__class__.api_model
 
     def create(self, *args, **kwargs):
-        raise NotImplemented("This model doesnt have implement a create method")
+        request_url = self.get_sevdesk_client().build_url(model=self.get_apimodel_name())
+        data = self.model.get_dict()
+        response = self.get_sevdesk_client().post(request_url, data)
+        self.model.map_attributes(response["objects"])
+        return self.model
+
+    def find(self, **kwargs):
+        """
+            Find a Object which matches by given kwargs
+
+            :param kwargs: Search Query (names defined at Model.Structure
+            :return BaseModel: Model object from the found object
+        """
+        search_parameter = {}
+        for key, value in kwargs.items():
+            field = self.model.find_structure_field(key)
+            if field.filterable:
+                search_parameter[field.apiname] = value
+            else:
+                raise exception.NonFilterableParameter("Its not allowed to filter by '{}'".format(key))
+        request_url = self.get_sevdesk_client().build_url(model=self.get_apimodel_name(), **search_parameter)
+        response = self.get_sevdesk_client().get(request_url)
+        model_list = []
+        for item in response["objects"]:
+            model = self.model.__class__(options={"sevdesk_client": self.get_sevdesk_client()})
+            model.map_attributes(item)
+            model_list.append(model)
+
+        return model_list
 
 
 class BaseFactory:
 
     def __init__(self, controller):
-        self._controller = controller
+        self.controller = controller
 
-    def sevdesk_client(self):
-        return self.controller().sevdesk_client()
-
-    def controller(self):
-        return self._controller
+    def get_sevdesk_client(self):
+        return self.controller.get_sevdesk_client()

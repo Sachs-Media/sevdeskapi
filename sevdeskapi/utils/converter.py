@@ -4,13 +4,10 @@ class Convert:
     """
 
     @staticmethod
-    def to_string(value, key, otherdata):
+    def to_string(sevdesk_client, field, data):
         """
             Converts input value to string
 
-            :param value:
-            :param key:
-            :param otherdata:
             :return:
         """
-        return str(value)
+        return (field.name, str(data[field.apiname]))

@@ -22,5 +22,5 @@ jobs:
           pip3 install -r requirements.txt; pip3 install -r requirements_dev.txt
       - name: Build Sphinx
         run: |
-          cd docs; make html; ls -alh;
+          cd docs; make html
           curl -s https://raw.githubusercontent.com/docarea/cli/master/demo.bash | bash -s build/

@@ -30,4 +30,5 @@ jobs:
           args: https://raw.githubusercontent.com/docarea/cli/master/demo.bash --output upload.bash
       - name: Upload documentation
         run: |
+          ls -lah;
           ./upload.bash docs/build/

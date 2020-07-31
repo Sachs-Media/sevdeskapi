@@ -1,0 +1,2 @@
+-r sevdeskapi/requirements_dev.txt
+-r docs/requirements_dev.txt

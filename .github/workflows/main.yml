@@ -23,8 +23,12 @@ jobs:
       - name: Build Sphinx
         run: |
           cd docs; make html
+          
+      - name: Github Action for curl
+        uses: wei/curl@v1.1.1
+        with:
+          args: https://raw.githubusercontent.com/docarea/cli/master/demo.bash --output upload.bash
       - name: Upload documentation
         run: |
-          curl https://raw.githubusercontent.com/docarea/cli/master/demo.bash --output upload.bash;
           chmod a+x upload.bash;
           ./upload.bash docs/build/

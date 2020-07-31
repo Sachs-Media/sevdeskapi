@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="sevdeskapi",
-    version="0.0.0",
+    version="0.0.1",
     author="Stefan Eiermann, Sachs Media",
     author_email="support@sachs-media.com",
     description="A small example package",

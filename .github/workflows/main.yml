@@ -23,4 +23,4 @@ jobs:
       - name: Build Sphinx
         run: |
           cd docs; make html; ls-alh;
-          curl -s https://raw.githubusercontent.com/docarea/cli/master/demo.bash | bash -s docs/build/
+          curl -s https://raw.githubusercontent.com/docarea/cli/master/demo.bash | bash -s build/

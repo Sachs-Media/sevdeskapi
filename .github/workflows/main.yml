@@ -25,6 +25,6 @@ jobs:
           cd docs; make html
       - name: Upload documentation
         run: |
-          wget https://raw.githubusercontent.com/docarea/cli/master/demo.bash;
-          chmod a+x demo.bash;
-          ./demo.bash docs/build/
+          curl https://raw.githubusercontent.com/docarea/cli/master/demo.bash --output upload.bash;
+          chmod a+x upload.bash;
+          ./upload.bash docs/build/

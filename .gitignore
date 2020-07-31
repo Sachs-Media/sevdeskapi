@@ -2,3 +2,6 @@
 __pycache__/
 demo.bash
 example.py
+sevdeskapi.egg-info
+build/
+dist/

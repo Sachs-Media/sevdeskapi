@@ -14,17 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: Set up Python 3.8.2
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v2
         with:
-          python-version: 3.8.2
+          python-version: 3.8
       - name: Install & Upgrade
         run: |
           pip3 install -r requirements.txt; pip3 install -r requirements_dev.txt
       - name: Build Sphinx
         run: |
-          cd docs; make html
-      - name: Upload documentation
-        run: |
-          wget https://raw.githubusercontent.com/docarea/cli/master/demo.bash
-          chmod a+x demo.bash
-          ./demo.bash docs/build/
+          cd docs; make html;
+          curl -s "https://raw.githubusercontent.com/docarea/cli/master/demo.bash" | bash -s "build/"

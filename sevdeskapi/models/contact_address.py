@@ -8,6 +8,7 @@ import enum
 
 class ContactAddress(BaseModel):
     CONTROLLER_CLASS = contactaddress.ContactAddressController
+    DEFAULT_OBJECT_NAME = "ContactAddress"
     STRUCTURE = (
         SevDeskField("contactId", "contact[id]", converter=Convert.to_int, filterable=True, related_to="contact"),
         SevDeskField("contactObjectName", "contact[objectName]", related_to="contact"),

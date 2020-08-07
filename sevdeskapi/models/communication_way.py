@@ -16,6 +16,7 @@ class CommunicationWayType(enum.Enum):
 
 class CommunicationWay(BaseModel):
     CONTROLLER_CLASS = communicationway.CommunicationWayController
+    DEFAULT_OBJECT_NAME = "CommunicationWay"
     STRUCTURE = (
         SevDeskField("contactId", "contact[id]", converter=Convert.to_int, filterable=True, related_to="contact"),
         SevDeskField("contactObjectName", "contact[objectName]", related_to="contact"),

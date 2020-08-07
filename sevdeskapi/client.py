@@ -47,16 +47,25 @@ class SevDeskClient:
         url = "{base_url}/api/{version}/{model}{query}".format(base_url=base_url, version=version, model=model, query=query)
         return url
 
-    def post(self, url, data):
-
-        response = requests.post(url, data=data, headers={
+    def _default_header(self):
+        return {
             "Authorization": self._api_token
-        })
+        }
+
+    def post(self, url, data=None, files=None, headers=None):
+
+        header = self._default_header()
+
+        if headers is not None:
+            header.update(headers)
+
+        response = requests.post(url, data=data, headers=header, files=files)
 
         if 299 <= response.status_code >= 200:
             print(data)
             print(response.json())
             raise ValueError("This is not a valid request. Statuscode %s" % str(response.status_code))
+
         return response.json()
 
     def get(self, url):

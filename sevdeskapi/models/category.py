@@ -6,6 +6,7 @@ from sevdeskapi.utils.converter import Convert
 
 class Category(BaseModel):
     CONTROLLER_CLASS = categorycontroller.CategoryController
+    DEFAULT_OBJECT_NAME = "Category"
     STRUCTURE = (
         SevDeskField("id", "id", ["category[id]"], converter=Convert.to_int, filterable=True),
         SevDeskField("name", "name", ["category[name]"]),

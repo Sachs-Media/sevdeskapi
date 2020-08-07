@@ -11,6 +11,7 @@ class AbstractBaseModel:
 
     CONTROLLER_CLASS = None
     STRUCTURE = []
+    DEFAULT_OBJECT_NAME = ""
 
 
 class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
@@ -24,6 +25,8 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
         self._options = kwargs.pop("options", self.get_options())
 
         self._sevdesk_client = self._options.get("sevdesk_client")
+        if self.__class__.DEFAULT_OBJECT_NAME:
+            self.objectName = self.__class__.DEFAULT_OBJECT_NAME
 
         self.map_attributes(kwargs)
 

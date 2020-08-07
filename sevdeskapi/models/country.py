@@ -5,7 +5,7 @@ from sevdeskapi.utils.sevdeskfield import SevDeskField
 
 
 class Country(BaseModel):
-
+    DEFAULT_OBJECT_NAME = "StaticCountry"
     CONTROLLER_CLASS = country.CountryController
     STRUCTURE = (
         SevDeskField("id", "id", ["country[id]"], converter=Convert.to_int),

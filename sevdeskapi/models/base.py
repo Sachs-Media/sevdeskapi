@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 import sevdeskapi.exception as exception
-import sevdeskapi.utils.map  as maputil
+import sevdeskapi.utils.map as maputil
 
 if TYPE_CHECKING:
     from sevdeskapi.controller.base import BaseController
@@ -43,7 +43,7 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
             raise exception.AlreadyConnected("Another SevDeskClient is linked to this Model")
 
     @staticmethod
-    def convert(self, sevdesk_client, field, data):
+    def convert(sevdesk_client, data, field, key):
         """
         This method should be used by SevdeskTranslate to Convert a attribute to a submodal
         :return:
@@ -82,10 +82,21 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
         new_data = {}
         for field in remote_fields:
 
-            local_field_list = list(set(filter(lambda item: item is not None, [
-                self.find_structure_field(field.apiname),
-                self.find_structure_field(field.name)
-            ] + [ self.find_structure_field(alias) for alias in field.aliases])))
+            local_field_list = list(
+                set(
+                    filter(
+                        lambda item: item is not None,
+                        [
+                            self.find_structure_field(field.apiname),
+                            self.find_structure_field(field.name)
+                        ] +
+                        [
+                            self.find_structure_field(alias) for alias in field.aliases
+                        ]
+                    )
+                )
+            )
+
 
             if len(local_field_list) > 1:
                 raise ValueError("Multiple fields have the same alias, apiname or name")

@@ -6,7 +6,12 @@ log = logging.getLogger("sevdeskapi.utils")
 
 class SevDeskField:
 
-    def __init__(self, name, apiname, aliases=[], related_to=None, converter=Convert.to_string, required=False, filterable=False, nested=False):
+    def __init__(self, name, apiname, aliases=None, related_to=None, converter=None, required=False, filterable=False, nested=False):
+        if aliases is None:
+            aliases = []
+        if converter is None:
+            converter = Convert.to_string
+
         self.name = name # Name who set as Attribute at object
         self.apiname = apiname # NAme who used for communication with SevDesk
         self.aliases = aliases # other names that may come up

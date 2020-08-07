@@ -24,7 +24,6 @@ class AttributeMixin(object):
                 return field
 
     def map_attributes(self, data):
-
         for key, item in data.items():
             field = self.find_structure_field(key)
             if field is None:

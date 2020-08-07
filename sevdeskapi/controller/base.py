@@ -48,7 +48,8 @@ class BaseController:
         data = self.model.get_dict()
         response = self.get_sevdesk_client().post(request_url, data)
         self.model.map_attributes(response["objects"])
-        return self.model
+
+        return response
 
     def find(self, **kwargs):
         """

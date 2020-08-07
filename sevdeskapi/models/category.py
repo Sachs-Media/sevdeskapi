@@ -18,7 +18,10 @@ class Category(BaseModel):
 
         values = {}
         if "category" in data:
-            values.update(data.get("category").get_dict())
+            if isinstance(data.get("category"), Category):
+                values.update(data.get("category").get_dict())
+            elif type(data.get("category")) is dict:
+                values.update(data.get("category"))
 
         for item in [("id", "category[id]"), ("name", "category[name]"), ("objectName", "category[objectName]")]:
             d = data.get(item[1])

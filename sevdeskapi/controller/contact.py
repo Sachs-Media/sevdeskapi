@@ -17,7 +17,13 @@ class ContactController(basecontroller.BaseController):
         request_url = self.get_sevdesk_client().build_url(model=self.get_apimodel_name())
         data = self.model.get_dict()
         response = self.get_sevdesk_client().post(request_url, data)
+
+        self.model.map_attributes(response.get("objects"))
+
         return response
+
+
+
 
     class Factory(basecontroller.BaseFactory):
 

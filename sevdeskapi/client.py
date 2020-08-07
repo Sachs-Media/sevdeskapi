@@ -52,6 +52,11 @@ class SevDeskClient:
         response = requests.post(url, data=data, headers={
             "Authorization": self._api_token
         })
+
+        if 299 <= response.status_code >= 200:
+            print(data)
+            print(response.json())
+            raise ValueError("This is not a valid request. Statuscode %s" % str(response.status_code))
         return response.json()
 
     def get(self, url):
@@ -59,6 +64,10 @@ class SevDeskClient:
         response = requests.get(url, headers={
             "Authorization": self._api_token
         })
+
+        if 299 <= response.status_code >= 200:
+            raise ValueError("This is not a valid request. Statuscode %s" % str(response.status_code))
+
         return response.json()
 
     def controller(self):

@@ -1,27 +1,30 @@
 import sevdeskapi.controller.category as categorycontroller
-import sevdeskapi.models.base as basemodel
-from sevdeskapi.utils.sevdesktranslate import SevDeskTranslate
+from sevdeskapi.models.base import BaseModel
+from sevdeskapi.utils.sevdeskfield import SevDeskField
+from sevdeskapi.utils.converter import Convert
 
 
-class Category(basemodel.BaseModel):
+class Category(BaseModel):
     CONTROLLER_CLASS = categorycontroller.CategoryController
     STRUCTURE = (
-        SevDeskTranslate("id", "id", filterable=True),
-        SevDeskTranslate("name", "name"),
-        SevDeskTranslate("objectType", "objectType", filterable=True),
+        SevDeskField("id", "id", ["category[id]"], converter=Convert.to_int, filterable=True),
+        SevDeskField("name", "name", ["category[name]"]),
+        SevDeskField("objectType", "objectType", ["category[objectType]"], filterable=True),
+        SevDeskField("objectName", "objectName", ["category[objectName]"], filterable=True),
     )
 
     @staticmethod
-    def convert(sevdesk_client, field, data):
-        print("ASDFASDF")
+    def convert(sevdesk_client, data, field, key):
+
         values = {}
         if "category" in data:
-            values.update(data.get("category"))
+            values.update(data.get("category").get_dict())
 
-        values["id"] = values.get("category[id]")
-        values["name"] = values.get("category[name]")
-        values["objectName"] = values.get("category[objectName]")
+        for item in [("id", "category[id]"), ("name", "category[name]"), ("objectName", "category[objectName]")]:
+            d = data.get(item[1])
+            if d is not None:
+                values[item[0]] = d
+
         model = Category(options={"sevdesk_client":sevdesk_client})
         model.map_attributes(values)
-        print("-"*100)
         return ("category", model)

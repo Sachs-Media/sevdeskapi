@@ -23,8 +23,6 @@ class AttributeMixin(object):
                needle == field.apiname:
                 return field
 
-
-
     def map_attributes(self, data):
 
         for key, item in data.items():
@@ -32,6 +30,5 @@ class AttributeMixin(object):
             if field is None:
                 log.debug("Attribute Mapping: Ignore parameter '{}'".format(key))
             else:
-
-                converted_information = field.converter(self.get_sevdesk_client(), field, data)
+                converted_information = field.converter(self.get_sevdesk_client, data, field, key)
                 setattr(self, *converted_information)

@@ -22,6 +22,7 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
         self.controller = self.__class__.CONTROLLER_CLASS(self)
 
         self._options = kwargs.pop("options", self.get_options())
+
         self._sevdesk_client = self._options.get("sevdesk_client")
 
         self.map_attributes(kwargs)
@@ -47,18 +48,50 @@ class BaseModel(maputil.AttributeMixin, AbstractBaseModel):
         This method should be used by SevdeskTranslate to Convert a attribute to a submodal
         :return:
         """
-
         raise NotImplemented("This method is currently not implemented")
 
     def get_options(self):
         return {}
 
-    def get_dict(self):
-        data = {}
-        for key, field in self.structure.items():
+    def get_dict(self, data=None):
+        """
+            Returns current Model object as dict
+            :return dict: dict representation of current object
+        """
+
+        if data is None:
+            data = {}
+
+        for field in self.get_structure():
             if hasattr(self, field.name):
-                data[field.apiname()] = getattr(self, field.name)
-            elif field.required() and not hasattr(self, field.name):
+                value = getattr(self, field.name)
+
+                if field.nested:
+                    # find fields which are related to the nested field
+                    related_fields = list(filter(lambda item: item.related_to == field.name, self.get_structure()))
+                    data.update(value.parent_update(data, related_fields))
+                else:
+                    data[field.apiname] = value
+
+            elif field.required and not hasattr(self, field.name):
                 raise ValueError("The parameter {} is required".format(field.name))
 
         return data
+
+    def parent_update(self, data, remote_fields):
+        new_data = {}
+        for field in remote_fields:
+
+            local_field_list = list(set(filter(lambda item: item is not None, [
+                self.find_structure_field(field.apiname),
+                self.find_structure_field(field.name)
+            ] + [ self.find_structure_field(alias) for alias in field.aliases])))
+
+            if len(local_field_list) > 1:
+                raise ValueError("Multiple fields have the same alias, apiname or name")
+
+            local_field = local_field_list[0]
+            if hasattr(self, local_field.name):
+                new_data[field.apiname] = getattr(self, local_field.name)
+
+        return new_data

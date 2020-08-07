@@ -7,18 +7,17 @@ class ContactController(basecontroller.BaseController):
 
     def create(self):
 
-        customer_number = self.factory().getNextCustomerNumber()
+        customer_number = self.factory.getNextCustomerNumber()
 
         self.model.customerNumber = customer_number
         self.model.objectName = "Contact"
-        self.model.categoryId = 43
-        self.model.categoryObjectName = "Category"
+        # self.model.categoryId = 43
+        # self.model.categoryObjectName = "Category"
 
         request_url = self.get_sevdesk_client().build_url(model=self.get_apimodel_name())
         data = self.model.get_dict()
         response = self.get_sevdesk_client().post(request_url, data)
-        print(response)
-
+        return response
 
     class Factory(basecontroller.BaseFactory):
 

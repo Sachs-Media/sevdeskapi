@@ -9,7 +9,7 @@ class Tag(BaseModel):
     CONTROLLER_CLASS = tagcontroller.TagController
     STRUCTURE = (
         SevDeskField("id", "id", ["tag[id]"], converter=Convert.to_int, filterable=True),
-        SevDeskField("name", "name", ["tag[name]"]),
+        SevDeskField("name", "name", ["tag[name]"], filterable=True),
         SevDeskField("tagId", "tag[id]"),
         SevDeskField("objectName", "objectName", ["objectName", "tag[objectName]", "tagObjectName"]),
     )
@@ -26,5 +26,5 @@ class Tag(BaseModel):
 
         request_url = self.get_sevdesk_client().build_url(
             model="TagRelation")
-        response = self.get_sevdesk_client().post(request_url, object)
+        response = self.get_sevdesk_client().post(request_url, data)
         return response["objects"]

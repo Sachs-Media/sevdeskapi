@@ -1,10 +1,13 @@
 from typing import TYPE_CHECKING
-
+import logging
 import sevdeskapi.exception as exception
 
 if TYPE_CHECKING:
     from sevdeskapi.models.base import BaseModel
     from sevdeskapi.client import SevDeskClient
+
+
+log = logging.getLogger("basemodel")
 
 
 class BaseController:
@@ -44,8 +47,18 @@ class BaseController:
         return self.__class__.api_model
 
     def create(self, *args, **kwargs):
+        """
+            Creates a new Object at API
+            by default it uses the linked model for informations.
+            Yo can overwrite the request parameters it via kwargs
+
+            :param kwargs: Arguments which should be overwritten
+
+            :return request: The orginal requests response
+        """
         request_url = self.get_sevdesk_client().build_url(model=self.get_apimodel_name())
         data = self.model.get_dict()
+        data.update(kwargs)
         response = self.get_sevdesk_client().post(request_url, data)
         self.model.map_attributes(response["objects"])
 
@@ -66,6 +79,7 @@ class BaseController:
             else:
                 raise exception.NonFilterableParameter("Its not allowed to filter by '{}'".format(key))
         request_url = self.get_sevdesk_client().build_url(model=self.get_apimodel_name(), **search_parameter)
+        print(request_url)
         response = self.get_sevdesk_client().get(request_url)
         model_list = []
         for item in response["objects"]:
@@ -74,6 +88,27 @@ class BaseController:
             model_list.append(model)
 
         return model_list
+
+    def get_or_create(self, **kwargs):
+        """
+            Searches a Value, if no result creates a new one with the same
+            Values
+
+            :return tuple(object: BaseModel, created: bool): object contains the (existing) api object, created is a boolean if the data
+            was new created or already exist
+        """
+        result = self.find(**kwargs)
+        if len(result) <= 0:
+            self.create(**kwargs)
+            created = True
+        elif len(result) > 1:
+            log.info([ item.name for item in result ])
+            raise ValueError("too many results")
+        else:
+            self.model.map_attributes(result[0].get_dict())
+            created = False
+
+        return self.model, created
 
 
 class BaseFactory:

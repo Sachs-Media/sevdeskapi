@@ -87,3 +87,8 @@ class SevDeskClient:
         def __init__(self, client):
             self.category = sevdeskapi.models.Category(options={"sevdesk_client": client}).controller
             self.contact = sevdeskapi.models.Contact(options={"sevdesk_client": client}).controller
+            self.tag = sevdeskapi.models.Tag(options={"sevdesk_client": client}).controller
+            self.communicationWay = sevdeskapi.models.CommunicationWay(options={"sevdesk_client": client}).controller
+            self.country = sevdeskapi.models.Country(options={"sevdesk_client": client}).controller
+            self.feed = sevdeskapi.models.Feed(options={"sevdesk_client": client}).controller
+            self.contactAddress = sevdeskapi.models.ContactAddress(options={"sevdesk_client": client}).controller

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="sevdeskapi",
-    version="0.1.1",
+    version="0.2.0",
     author="Stefan Eiermann, Sachs Media",
     author_email="support@sachs-media.com",
     description="Provides a Python (object-based) API for SevDesk",

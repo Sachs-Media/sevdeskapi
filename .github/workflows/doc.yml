@@ -21,4 +21,4 @@ jobs:
       - name: Build Sphinx
         run: |
           cd docs; make html;
-          curl -s "https://raw.githubusercontent.com/docarea/cli/master/demo.bash" | DOCAREA_DOCUMENTATION_ID=${{ secrets.DOCAREA_DOCUMENTATION_ID }} DOCAREA_CLIENT_ID=${{ secrets.DOCAREA_CLIENT_ID }} DOCAREA_CLIENT_SECRET=${{ secrets.DOCAREA_CLIENT_SECRET }} bash -s "build/"
+          curl -s "https://raw.githubusercontent.com/docarea/cli/master/demo.bash" | DOCAREA_DOCUMENTATION_ID=${{ secrets.DOCAREA_DOCUMENTATION_ID }} DOCAREA_CLIENT_ID=${{ secrets.DOCAREA_CLIENT_ID }} DOCAREA_CLIENT_SECRET=${{ secrets.DOCAREA_CLIENT_SECRET }} bash -s "build/html/"

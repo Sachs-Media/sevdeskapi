@@ -4,7 +4,6 @@
 ![PyPI](https://img.shields.io/pypi/v/sevdeskapi)
 ![GitHub](https://img.shields.io/github/license/sachs-media/sevdeskapi)
 
-
 A python-based API for communication with SevDesk
 
 Further information coming soon
